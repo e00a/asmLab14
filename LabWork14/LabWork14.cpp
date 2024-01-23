@@ -11,23 +11,19 @@ void task1_2() {
 }
 
 void task1_3() {
-     char binaryNumber = 0;
-
+    char binaryNumber = 0;
+    int eaxValue;
     _asm {
         mov al, 10b
         mov binaryNumber, al
-    }
-    cout << "Binary number: " << bitset<8>(static_cast<int>(binaryNumber)) << endl;
-
-    unsigned int eaxValue;
-    _asm {
         mov eaxValue, eax
     }
-    cout << "EAX: " << eaxValue << endl;
+    cout << "Binary number: " << bitset<8>(static_cast<int>(binaryNumber)) << endl;
+    cout << "EAX: " << bitset<32>(static_cast<int>(eaxValue)) << endl;
 }
 
 void task1_4() {
-    unsigned short value = 0;
+    short value = 0;
     _asm {
         mov bx, 3
         inc bx
@@ -66,14 +62,30 @@ void task1_6() {
 }
 
 void task1_7() {
-    unsigned char al = 0xFF;
-    unsigned int eax = 0;
+    int eaxValue = 0;
 
     _asm {
-        
+        xor eax, eax
+        mov al, 11111111b
+        mov ah, al
+        shl eax, 8; Сдвигаем eax на 16 бит вправо
+        mov al, ah
+        shl eax, 8; Сдвигаем eax на 16 бит вправо
+        mov al, ah
+        mov eaxValue, eax
     }
 
-    std::cout << "EAX: " << std::hex << eax << std::endl;
+   /* _asm {
+        xor eax, eax
+        mov al, 11111111b
+        mov ah, al
+        shl eax, 16; Сдвигаем eax на 16 бит вправо
+        mov al, 11111111b
+        mov ah, al
+        mov eaxValue, eax
+    }*/
+
+    std::cout << "EAX: " << bitset<32>(static_cast<int>(eaxValue)) << std::endl;
 }
 
 void task2() {
@@ -124,14 +136,14 @@ void task3() {
 
 int main()
 {
-    //task1_1();
-    //task1_2();
-    //task1_3();
-    //task1_4();
-    //task1_5();
-    //task1_6();
-    //task1_7(); //dont work
-    //task2(); 
+    task1_1();
+    task1_2();
+    task1_3();
+    task1_4();
+    task1_5();
+    task1_6();
+    task1_7(); //dont work
+    task2(); 
     task3(); //dw
 }
 
