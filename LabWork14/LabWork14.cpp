@@ -115,34 +115,38 @@ void task3() {
     //std::cin >> num1;
     //std::cout << "Enter the second floating-point number: ";
     //std::cin >> num2;
-    float num1 = 13.0;
-    float num2 = 3.0;
-    float res =0.0;
-    float remainder;
-    /*_asm {
+    int num1 = 13.0;
+    int num2 = 3.0;
+    int res = 0.0;
+    int remainder;
+    _asm {
+        xor edx, edx
+        xor eax, eax
+        xor ebx, ebx
         mov eax, num1
         mov ebx, num2
-        div ebx 
+        div ebx
+        mov remainder, edx
         mul eax
-        add eax, edx
+        add eax, remainder
         mov res, eax
-    }*/
+    }
     // eax = частное, edx = остаток
     
-   _asm {
-       fld dword ptr[num1] // Загрузить num1 в стек FPU
-       fdiv dword ptr[num2] // Делить num1 на num2
-       fstp dword ptr[res] // Сохранить результат деления в res
+   //_asm {
+   //    fld dword ptr[num1] // Загрузить num1 в стек FPU
+   //    fdiv dword ptr[num2] // Делить num1 на num2
+   //    fstp dword ptr[res] // Сохранить результат деления в res
 
-       fld dword ptr[num1] // Загрузить num1 обратно в стек FPU
-       fsub dword ptr[res] // Вычесть res из num1
-       fstp dword ptr[remainder] // Сохранить остаток от деления в remainder
+   //    fld dword ptr[num1] // Загрузить num1 обратно в стек FPU
+   //    fsub dword ptr[res] // Вычесть res из num1
+   //    fstp dword ptr[remainder] // Сохранить остаток от деления в remainder
 
-       fld dword ptr[res] // Загрузить res обратно в стек FPU
-       fmul st(0), st(0) // Умножить res на самого себя
-       fadd dword ptr[remainder] // Добавить remainder к результату умножения
-       fstp dword ptr[res] // Сохранить окончательный результат в res
-   };
+   //    fld dword ptr[res] // Загрузить res обратно в стек FPU
+   //    fmul st(0), st(0) // Умножить res на самого себя
+   //    fadd dword ptr[remainder] // Добавить remainder к результату умножения
+   //    fstp dword ptr[res] // Сохранить окончательный результат в res
+   //};
 
     std::cout << "Результат: " << res << std::endl;
 
@@ -162,7 +166,7 @@ int main()
     //task1_6();
     //task1_7();
     //task2(); 
-    task3(); //dw
+    task3(); 
 }
 
 
