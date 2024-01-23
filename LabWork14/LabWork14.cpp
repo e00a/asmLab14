@@ -1,5 +1,6 @@
 ﻿#include <bitset>
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 void task1_1() {
@@ -110,40 +111,57 @@ void task2() {
 }
 
 void task3() {
-    double num1, num2;
-    float quotient, remainder, result;
+    //std::cout << "Enter the first floating-point number: ";
+    //std::cin >> num1;
+    //std::cout << "Enter the second floating-point number: ";
+    //std::cin >> num2;
+    float num1 = 13.0;
+    float num2 = 3.0;
+    float res =0.0;
+    float remainder;
+    /*_asm {
+        mov eax, num1
+        mov ebx, num2
+        div ebx 
+        mul eax
+        add eax, edx
+        mov res, eax
+    }*/
+    // eax = частное, edx = остаток
+    
+   _asm {
+       fld dword ptr[num1] // Загрузить num1 в стек FPU
+       fdiv dword ptr[num2] // Делить num1 на num2
+       fstp dword ptr[res] // Сохранить результат деления в res
 
-    std::cout << "Enter the first floating-point number: ";
-    std::cin >> num1;
+       fld dword ptr[num1] // Загрузить num1 обратно в стек FPU
+       fsub dword ptr[res] // Вычесть res из num1
+       fstp dword ptr[remainder] // Сохранить остаток от деления в remainder
 
-    std::cout << "Enter the second floating-point number: ";
-    std::cin >> num2;
+       fld dword ptr[res] // Загрузить res обратно в стек FPU
+       fmul st(0), st(0) // Умножить res на самого себя
+       fadd dword ptr[remainder] // Добавить remainder к результату умножения
+       fstp dword ptr[res] // Сохранить окончательный результат в res
+   };
 
-    _asm {
-        fld num1
-        fdiv num2
-        fstp quotient
-    }
-    _asm {
-        fld num1
-        fmul quotient
-        fadd remainder
-        fstp result
-    }
+    std::cout << "Результат: " << res << std::endl;
 
-    cout << "Result: " << result << endl;
+    double quotient1 = floor(num1 / num2);  // Вычисление частного
+    double remainder1 = fmod(num1, num2);  // Вычисление остатка
+    double result = quotient1 * quotient1 + remainder1;  // Умножение частного на число и добавление остатка
+    std::cout << "Результат: " << result << std::endl;
 }
 
 int main()
 {
-    task1_1();
-    task1_2();
-    task1_3();
-    task1_4();
-    task1_5();
-    task1_6();
-    task1_7(); //dont work
-    task2(); 
+    //task1_1();
+    //task1_2();
+    //task1_3();
+    //task1_4();
+    //task1_5();
+    //task1_6();
+    //task1_7();
+    //task2(); 
     task3(); //dw
 }
 
